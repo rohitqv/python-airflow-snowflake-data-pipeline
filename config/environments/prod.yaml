@@ -1,0 +1,38 @@
+# Production Environment Configuration
+
+# Override base config for production
+spark:
+  master: "spark://spark-master:7077"  # Production Spark cluster
+  config:
+    spark.executor.memory: "8g"
+    spark.driver.memory: "4g"
+    spark.executor.cores: "4"
+    spark.executor.instances: "10"
+    spark.sql.adaptive.enabled: "true"
+    spark.sql.adaptive.coalescePartitions.enabled: "true"
+    spark.sql.adaptive.skewJoin.enabled: "true"
+    spark.sql.adaptive.localShuffleReader.enabled: "true"
+
+snowflake:
+  warehouse: "PROD_WAREHOUSE"
+  database: "PROD_DATABASE"
+  schema: "PROD_SCHEMA"
+  role: "PROD_ROLE"
+
+# Production-specific settings
+data_quality:
+  enable_validation: true
+  max_corrupt_records_percent: 1  # Strict validation in production
+  required_columns_check: true
+  null_check_threshold: 5
+
+monitoring:
+  log_level: "INFO"
+  enable_metrics: true
+  enable_alerts: true
+
+processing:
+  batch_size: 50000  # Larger batches for efficiency
+  parallel_jobs: 8
+  retry_attempts: 3
+  retry_delay_seconds: 600  # Longer delays in production

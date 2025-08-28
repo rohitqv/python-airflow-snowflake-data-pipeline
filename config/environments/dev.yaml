@@ -1,0 +1,29 @@
+# Development Environment Configuration
+
+# Override base config for development
+spark:
+  master: "local[2]"
+  config:
+    spark.executor.memory: "1g"
+    spark.driver.memory: "512m"
+    spark.executor.cores: "1"
+
+snowflake:
+  warehouse: "DEV_WAREHOUSE"
+  database: "DEV_DATABASE"
+  schema: "DEV_SCHEMA"
+  role: "DEV_ROLE"
+
+# Development-specific settings
+data_quality:
+  enable_validation: true
+  max_corrupt_records_percent: 10  # More lenient for dev
+
+monitoring:
+  log_level: "DEBUG"
+  enable_metrics: false  # Disable metrics collection in dev
+
+processing:
+  batch_size: 1000  # Smaller batches for faster iteration
+  parallel_jobs: 2
+  retry_attempts: 1  # Fail fast in development

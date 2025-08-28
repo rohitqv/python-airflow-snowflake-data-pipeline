@@ -1,0 +1,63 @@
+# Main Configuration File
+# This file contains the base configuration that can be overridden by environment-specific configs
+
+# Project Information
+project:
+  name: "python-airflow-snowflake-data-pipeline"
+  version: "1.0.0"
+  description: "Production-grade data pipeline using Airflow, Spark, and Snowflake"
+
+# Data Configuration
+data:
+  raw_path: "./data/raw"
+  processed_path: "./data/processed"
+  staging_path: "./data/staging"
+  archive_path: "./data/archive"
+  
+# Spark Configuration
+spark:
+  app_name: "DataPipeline"
+  master: "local[*]"
+  config:
+    spark.sql.adaptive.enabled: "true"
+    spark.sql.adaptive.coalescePartitions.enabled: "true"
+    spark.sql.adaptive.skewJoin.enabled: "true"
+    spark.executor.memory: "2g"
+    spark.driver.memory: "1g"
+    spark.executor.cores: "2"
+
+# Snowflake Configuration (will be overridden by environment-specific configs)
+snowflake:
+  account: "${SNOWFLAKE_ACCOUNT}"
+  user: "${SNOWFLAKE_USER}"
+  password: "${SNOWFLAKE_PASSWORD}"
+  warehouse: "${SNOWFLAKE_WAREHOUSE}"
+  database: "${SNOWFLAKE_DATABASE}"
+  schema: "${SNOWFLAKE_SCHEMA}"
+  role: "${SNOWFLAKE_ROLE}"
+
+# Airflow Configuration
+airflow:
+  dag_dir: "./airflow/dags"
+  plugins_dir: "./airflow/plugins"
+  logs_dir: "./airflow/logs"
+  
+# Data Quality Configuration
+data_quality:
+  enable_validation: true
+  max_corrupt_records_percent: 5
+  required_columns_check: true
+  null_check_threshold: 10
+
+# Monitoring Configuration
+monitoring:
+  enable_metrics: true
+  enable_alerts: true
+  log_level: "INFO"
+  
+# Processing Configuration
+processing:
+  batch_size: 10000
+  parallel_jobs: 4
+  retry_attempts: 3
+  retry_delay_seconds: 300

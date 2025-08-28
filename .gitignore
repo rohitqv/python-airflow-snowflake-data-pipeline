@@ -17,8 +17,8 @@ venv/
 # Data files (if they are generated and not source)
 /data/processed/
 
-#Ignore Environment Variables
-.env/
+# Ignore Environment Variables
+.env
 
 minio_data/
 

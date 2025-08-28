@@ -8,7 +8,7 @@ A comprehensive, production-ready data pipeline solution that orchestrates data 
 - **Snowflake Integration**: Native Snowflake provider with optimized data loading
 - **Multi-Layer Data Architecture**: Bronze (raw), Silver (cleaned), Gold (curated) data layers
 - **PySpark Processing**: Scalable data transformation jobs
-- **MinIO Integration**: S3-compatible object storage for data staging
+- **Local File Processing**: Direct processing of raw data files from local storage
 - **Azure Cloud Support**: Integration with Azure services (Blob Storage, Key Vault, Data Lake)
 - **Comprehensive Testing**: Unit tests for DAGs, scripts, and Snowflake DDL
 - **CI/CD Ready**: GitHub Actions and pre-commit hooks for code quality
@@ -27,7 +27,7 @@ python-airflow-snowflake-data-pipeline/
 ├── data/                            # Data storage
 │   ├── raw/                         # Raw data files (CSV datasets)
 │   └── processed/                   # Processed data output
-├── minio_data/                      # MinIO object storage data
+├── data/                            # Data storage
 ├── snowflake/                       # Snowflake database objects
 │   ├── ddl/                         # Data Definition Language scripts
 │   │   ├── bronze/                  # Bronze layer table definitions
@@ -57,7 +57,7 @@ python-airflow-snowflake-data-pipeline/
 - **Python 3.8+**
 - **Apache Airflow 2.9.2**
 - **Snowflake Account** with appropriate permissions
-- **MinIO Server** (for local development)
+- **Local File System** (for raw data access)
 - **PostgreSQL** (for Airflow metadata)
 - **Docker** (optional, for containerized deployment)
 
@@ -91,11 +91,9 @@ SNOWFLAKE_WAREHOUSE=your_warehouse
 SNOWFLAKE_DATABASE=your_database
 SNOWFLAKE_SCHEMA=your_schema
 
-# MinIO Configuration
-MINIO_ENDPOINT=localhost:9000
-MINIO_ACCESS_KEY=your_access_key
-MINIO_SECRET_KEY=your_secret_key
-MINIO_BUCKET=your_bucket
+# Data Directory Configuration
+DATA_RAW_PATH=./data/raw
+DATA_PROCESSED_PATH=./data/processed
 
 # Azure Configuration (if using)
 AZURE_STORAGE_CONNECTION_STRING=your_connection_string
@@ -125,8 +123,8 @@ airflow webserver --port 8080
 # Terminal 2: Start Airflow Scheduler
 airflow scheduler
 
-# Terminal 3: Start MinIO (if not running)
-minio server minio_data --console-address ":9001"
+# Terminal 3: Verify data files are available
+ls -la data/raw/
 ```
 
 ### 6. Access Airflow Web UI
@@ -159,12 +157,12 @@ Open your browser and navigate to `http://localhost:8080`
 - Includes simple tasks for validation
 
 ### 2. `upload_local_to_minio_classic_dag.py`
-- Uploads local files to MinIO object storage
-- Demonstrates file transfer workflows
+- Processes local files from data/raw directory
+- Demonstrates file processing workflows
 
 ### 3. `minio_connection_test.py`
-- Tests MinIO connectivity and configuration
-- Validates object storage setup
+- Tests local file system connectivity
+- Validates data directory setup
 
 ## 🧪 Testing
 
@@ -198,7 +196,7 @@ python -m pytest tests/snowflake_ddl_test/
 
 ### Local Development
 - Use the provided setup scripts
-- MinIO for local object storage
+- Local file system for raw data access
 - PostgreSQL for Airflow metadata
 
 ### Production Deployment
@@ -225,7 +223,7 @@ python -m pytest tests/snowflake_ddl_test/
 
 - [Apache Airflow Documentation](https://airflow.apache.org/docs/)
 - [Snowflake Documentation](https://docs.snowflake.com/)
-- [MinIO Documentation](https://docs.min.io/)
+- [Python File Operations](https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files)
 - [PySpark Documentation](https://spark.apache.org/docs/latest/api/python/)
 
 ## 📄 License

@@ -4,26 +4,26 @@ apache-airflow==2.9.2  # Pinned to specific stable version
 # Airflow Providers
 apache-airflow-providers-snowflake==5.3.0
 apache-airflow-providers-microsoft-azure==8.1.0
-# apache-airflow-providers-cncf-kubernetes==7.4.0  # Uncomment if using KubernetesExecutor
-
-apache-airflow-providers-http
-kaggle
-pandas
-scikit-learn
+apache-airflow-providers-apache-spark==4.7.1  # Spark integration
+apache-airflow-providers-http==4.9.0
+apache-airflow-providers-amazon==8.13.0
+apache-airflow[postgres,cncf.kubernetes]==2.9.2
 
 # Database Connectors
 snowflake-connector-python==3.7.0  # Pinned to maintain compatibility with Snowflake provider
-
-apache-airflow[postgres] 
-psycopg2-binary
+psycopg2-binary==2.9.9
 
 # Data Processing
+pyspark==3.4.1  # Apache Spark for distributed processing
 pandas==2.1.3  # Pinned to avoid potential breaking changes
+pyarrow==18.1.0  # Pinned for compatibility with snowflake-connector-python
 pyyaml==6.0.1  # Secure YAML parsing
-pyarrow==18.1.0 # Pinned for compatibility with snowflake-connector-python (resolves UserWarning)
+scikit-learn==1.3.2
 
 # Common Libraries - Pinned for security and stability
-requests==2.32.3 # Pinned to avoid yanked/vulnerable version 2.32.0 (CVE-2024-35195)
+requests==2.32.3  # Pinned to avoid yanked/vulnerable version 2.32.0 (CVE-2024-35195)
+python-dotenv==1.0.0  # Environment management
+protobuf>=3.19.5,<5.0.0  # Compatible with Google API packages
 
 # Azure SDKs - Pinned to known compatible versions
 azure-identity==1.15.0
@@ -31,36 +31,33 @@ azure-storage-blob==12.19.0
 azure-keyvault-secrets==4.7.0
 azure-storage-file-datalake==12.14.0  # ADLS Gen2 support
 
-#Amazon S3 Dependencies
-boto3==1.28.60  # Pinned to avoid yanked version 1.28.59 (CVE-2024-35195)
+# Amazon S3 Dependencies
+boto3==1.28.60  # Pinned to avoid yanked version 1.28.59
 
-apache-airflow-providers-amazon
+# Kaggle API for data retrieval (single entry)
+kaggle==1.5.16
+kagglehub==0.2.5
 
+# Google APIs
+google-api-python-client==2.108.0
+google-auth-httplib2==0.1.1
+google-auth-oauthlib==1.1.0
 
-# Dependency Management
-protobuf>=5.26.0,<6.0.0  # Explicit version range for compatibility
-python-dotenv==1.0.0  # Environment management
-
-
-apache-airflow[cncf.kubernetes]
-
-# Kaggle API for data retrieval
-kaggle
-kagglehub
+# Development and Testing (optional - install with pip install -e ".[dev]")
+# pytest>=7.0.0
+# pytest-cov>=4.0.0
+# pytest-mock>=3.10.0
+# black>=23.0.0
+# flake8>=6.0.0
+# mypy>=1.0.0
 
 # Security Considerations:
 # All packages are pinned to specific versions to ensure:
 # 1. Reproducible builds
-# 2. Known compatibility
+# 2. Known compatibility  
 # 3. Security vulnerability avoidance
 
 # Best Practices:
 # - Regularly update using `pip-review` or similar tools
 # - Test all version upgrades in staging before production
 # - Consider using a constraints file for transitive dependencies
-
-kaggle 
-
-google-api-python-client 
-google-auth-httplib2 
-google-auth-oauthlib
